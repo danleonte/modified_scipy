@@ -50,7 +50,7 @@ MINIMIZE_SCALAR_METHODS = ['brent', 'bounded', 'golden']
 
 def minimize(fun, x0, args=(), method=None, jac=None, hess=None,
              hessp=None, bounds=None, constraints=(), tol=None,
-             callback=None, options=None):
+             callback=None, hess_inv_initial_estimate = None, options=None):
     """Minimization of scalar function of one or more variables.
 
     Parameters
@@ -702,7 +702,7 @@ def minimize(fun, x0, args=(), method=None, jac=None, hess=None,
     elif meth == 'cg':
         res = _minimize_cg(fun, x0, args, jac, callback, **options)
     elif meth == 'bfgs':
-        res = _minimize_bfgs(fun, x0, args, jac, callback, **options)
+        res = _minimize_bfgs(fun, x0, args, jac, callback, hess_inv_initial_estimate, **options)
     elif meth == 'newton-cg':
         res = _minimize_newtoncg(fun, x0, args, jac, hess, hessp, callback,
                                  **options)
