@@ -1366,7 +1366,7 @@ def fmin_bfgs(f, x0, fprime=None, args=(), gtol=1e-5, norm=Inf,
             return res['x']
 
 
-def _minimize_bfgs(fun, x0, args=(), jac=None, callback=None,
+def _minimize_bfgs(fun, x0, args=(), jac=None, callback=None, hess_inv_initial_estimate = None,
                    gtol=1e-5, norm=Inf, eps=_epsilon, maxiter=None,
                    disp=False, return_all=False, finite_diff_rel_step=None,
                    xrtol=0, **unknown_options):
@@ -1421,8 +1421,11 @@ def _minimize_bfgs(fun, x0, args=(), jac=None, callback=None,
 
     k = 0
     N = len(x0)
-    I = np.eye(N, dtype=int)
-    Hk = I
+    if hess_inv_initial_estimate == None:
+           I = np.eye(N, dtype=int)
+           Hk = I
+    else:
+           Hk = hess_inv_initial_estimate
 
     # Sets the initial step guess to dx ~ 1
     old_old_fval = old_fval + np.linalg.norm(gfk) / 2
